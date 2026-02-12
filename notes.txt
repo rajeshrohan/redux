@@ -1,0 +1,45 @@
+Redux 
+React-Redux     
+Redux-thunk     : middleware
+Redux-toolkit   : 
+RTK Query       : api fetching 
+Redux Saga 
+----------------------------------
+1. Redux concept terms, pattern 
+
+2. Redux with React , problems, solution 
+
+3. Redux toolkit (RTK) with react 
+
+4. RTK query with React 
+
+5. project with RTK Async Thunk 
+
+6. Redux Saga 
+----------------------------------------------------
+Redux : 
+A pattern , A library, independent of frameworks.
+used for state management in js.
+
+lifting state leads to props drilling. 
+
+global store, access and change from anywhere. 
+
+used in : 
+1. Big applications
+2. High frequency of state changes.
+
+Redux pattern : 
+store 
+state    : amount 
+action   : deposit, withdraw
+Reducer  : type + payload 
+dispatch : fn 
+
+depositAsync : middleware like do check bal first. 
+dispatch : 
+
+
+
+
+
