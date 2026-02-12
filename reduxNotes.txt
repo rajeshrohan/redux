@@ -1,0 +1,151 @@
+Redux 
+React-Redux     
+Redux-thunk     : middleware
+Redux-toolkit   : 
+RTK Query       : api fetching 
+Redux Saga 
+
+1. Redux concept terms, pattern 
+2. Redux with React , problems, solution 
+3. Redux toolkit (RTK) with react 
+4. RTK query with React 
+5. project with RTK Async Thunk 
+
+---------------------Redux---------------------
+A pattern , A library, independent of frameworks.
+used for state management in js.
+global store, access and change from anywhere.
+
+lifting state leads to props drilling. 
+used in : 
+1. Big applications
+2. High frequency of state changes.
+
+Redux pattern : 
+store 	 : global store 
+state    : amount 
+action   : increment, decrement
+Reducer  : fn with algorithms and filter 
+dispatch : sends action to reducer.
+middleware : to pause, delay, modifiy in-btwn dispatch and reducer.
+
+The three principles of Redux:
+Single source of truth 		→ The whole app state is stored in one store.
+State is read-only 			→ State can only be changed by dispatching actions.
+Changes are made using pure functions 	→ Reducers calculate the next state.
+
+
+npm install redux 
+npm install redux-logger 
+
+import {createStore, applyMiddleware} from 'redux';
+import logger from 'redux-logger';
+
+const store = createStore(reducer, applyMiddleware(logger.default));
+const history = [ ];
+
+function reducer (state={amount : 1}, action){
+if(action.type === 'increment')
+	return {amount : state.amount + 1};
+else if(action.type == 'decrement')
+	return {amount : state.amount -1};
+else if(action.type === 'incrementByAmount')
+	return {amount : state.amount + action.payload};
+ return state;
+}
+
+store.subscribe(()=>{
+history.push(store.getState());
+console.log(history);
+});
+
+setInterval(()=>{
+store.dispatch({type: 'increment', payload : 5});
+}, 2000);
+
+
+createStore is legacy (Redux core).
+configureStore (from Redux Toolkit) is the recommended standard.
+configureStore replaces manual createStore + applyMiddleware setup.
+reducer is a pure fn that receives (state, action) and must return next state.
+An action object must have a type property and additional fields (payload).
+Redux follows unidirectional data flow, dispatch(action) sends action to the store.
+dispatch sends action to the store, store calls the reducer with (currentState, action).
+Reducers must return The new state object OR the existing state (if nothing changed)
+store.subscribe() runs after every dispatch — regardless of whether state changed.
+applyMiddleware is used with createStore.
+In modern Redux, middleware is added automatically via configureStore.
+Middleware intercepts actions before they reach the reducer.
+Redux Thunk → built-in default in Redux Toolkit
+
+
+Problem  : Same action can be called multiple times. 
+Solution : Action creator, 
+action names can mismatch, so use constans.
+
+--------------------------------------------------------
+Action Creator : 
+
+import {createStore, applyMiddleware} from 'redux';
+import logger from 'redux-logger';
+
+const store = createStore(reducer, applyMiddleware(logger.default));
+const history = [ ];
+const Increment = 'increment';
+const Decrement = 'decrement';
+const IncrementByAmount = 'incrementByAmount';
+
+function reducer (state={amount : 1}, action){
+if(action.type === Increment)
+	return {amount : state.amount + 1};
+else if(action.type == Decrement)
+	return {amount : state.amount -1};
+else if(action.type === IncrementByAmount)
+	return {amount : state.amount + action.payload};
+ return state;
+}
+
+store.subscribe(()=>{
+history.push(store.getState());
+console.log(history);
+});
+
+function increment(){
+	return {type : Increment}
+}
+function decrement(){
+	return {type : Decrement}
+}
+function incrementByAmount(value){
+	return {type : IncrementByAmount, payload : value}
+}
+
+setInterval(()=>{
+store.dispatch(incrementByAmount(5));
+}, 2000);
+
+--------------------------------------------------------
+Thunk Middleware :
+Redux (core) cannot handle Promises by default.
+we need middleware (Thunk or createAsyncThunk).
+Redux toolkit has in-built Redux-Thunk middleware by default.
+
+create 	: json file db.json 
+install : npm install json-serever --save-dev 
+run 	: npx json-server db.json
+get req : axios.get('url');
+create  : create using a fn, and call api inside 
+Error.  : Actions must be plain objects. 
+		Instead, the actual type was: 'Promise'
+
+
+
+
+
+
+
+
+
+
+
+
