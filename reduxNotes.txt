@@ -63,7 +63,6 @@ setInterval(()=>{
 store.dispatch({type: 'increment', payload : 5});
 }, 2000);
 
-
 createStore is legacy (Redux core).
 configureStore (from Redux Toolkit) is the recommended standard.
 configureStore replaces manual createStore + applyMiddleware setup.
@@ -77,7 +76,6 @@ applyMiddleware is used with createStore.
 In modern Redux, middleware is added automatically via configureStore.
 Middleware intercepts actions before they reach the reducer.
 Redux Thunk → built-in default in Redux Toolkit
-
 
 Problem  : Same action can be called multiple times. 
 Solution : Action creator, 
@@ -126,9 +124,15 @@ store.dispatch(incrementByAmount(5));
 
 --------------------------------------------------------
 Thunk Middleware :
+npm install redux-thunk
+
+"If you dispatch a function instead of an object, 
+I will execute that function and give it dispatch and getState."
+
 Redux (core) cannot handle Promises by default.
 we need middleware (Thunk or createAsyncThunk).
 Redux toolkit has in-built Redux-Thunk middleware by default.
+dispatch should be sync, immediate, not async.
 
 create 	: json file db.json 
 install : npm install json-serever --save-dev 
@@ -137,6 +141,70 @@ get req : axios.get('url');
 create  : create using a fn, and call api inside 
 Error.  : Actions must be plain objects. 
 		Instead, the actual type was: 'Promise'
+
+to make await : write a fn 
+
+now inside dispatch, pass function reference. **
+now action creator gets two params(dispatch, getState).
+and it will itself stop. 
+now you can directly dispatch in action creator. 
+you will notice dispatch runs 2 times. 
+
+when store dispatch, 
+typeof action === "function"
+it executes action(dispatch, getState);
+
+flow : 
+dispatch(getUser(1))
+        ↓
+getUser(1) returns function
+        ↓
+thunk middleware detects function
+        ↓
+thunk calls function(dispatch, getState)
+        ↓
+your async logic runs
+------------------------
+we need new Reducer for new data field logic,
+else it will more complex the logic, and unreadable. 
+1. make state more complex 
+2. state update will be more complex
+3. nested state will not work, objects are shallow copy. 
+
+there should be only one root reducer. 
+so use combineReduders provided by redux.
+takes a object , with name of each. 
+
+getState = global state, 
+reducer state = each object in global state.
+
+same action is received by all reducers,
+each can satisfy condition on it,
+but each reducer changes their own state only. 
+
+flow : 
+store - getState(), takes reducer fns, middlewares
+dispatch -> action creator -> action -> middleware -> reducer case.
+
+--------------------------------------------------------
+Immmer library : 
+write mutable-looking code but producing immutable state updates.
+Immer provides a function:   produce() 
+draft is a Proxy-wrapped copy of your state.
+
+import { produce } from "immer";
+
+const state = { count: 0 };
+const newState = produce(state, draft => {
+  draft.count = 5;
+});
+
+
+
+
+
+
+
 
 
 
