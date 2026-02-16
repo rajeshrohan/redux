@@ -1,0 +1,16 @@
+subscribe btn : as redux dispatch 
+action  : starts from view.
+redux   : dispatch -> action -> state. 
+react-redux : to link redux state to react state. 
++ provides convient hooks. 
+
+function in react-redux : 
+provider : defines where redux is accessible. 
+useSelector : access state from react, treats redux state as react state.
+useDispatch : change state from anywhere. 
+
+
+
+
+
+
