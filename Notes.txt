@@ -9,6 +9,13 @@ provider : defines where redux is accessible.
 useSelector : access state from react, treats redux state as react state.
 useDispatch : change state from anywhere. 
 
+app has to pass many props, to child account, bonus.
+this leads to props drilling. 
+
+store can be made in app.js or index.js 
+npm i redux 
+
+
 
 
 
