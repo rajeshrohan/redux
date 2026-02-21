@@ -26,12 +26,34 @@ npx json-server db.json -p 8080     -> dedicated port
 
 -------------------------------------------------
 React-Redux : 
+react-redux binds the redux states into react states. 
+so, we can directly utilise redux states and UI will re-render again. 
+no need of using useState hooks always. 
 
-we can use the global store, but re-rending of UI will not happen. 
-so, to solve this problem , react-redux. 
+provides : 
+    <Provider>, useSelector, useDispatch
 
-1. state access 
-2. dispatch access 
+npm i react-redux 
+
+import{Provider} from 'react-redux';    
+<Provider store={store}> </Provider>
+
+import { useSelector, useDispatch } from "react-redux";
+const amount = useSelector(state => state.account.amount);
+const dispatch = useDispatch();
+
+1. Provider component : 
+<Provider store={store}> </Provider>
+
+2. useSelector hook : 
+provides global state.  
+const amount = useSelector(state => state.account.amount);
+
+3. useDispatch hook : 
+provides dispatch fn of store.
+const dispatch = useDispatch();
+
+
 
 
 
