@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 function Account({ account, increment, decrement, incrementByAmount }) {
   const [value, setValue] = useState(0);

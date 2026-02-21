@@ -13,11 +13,25 @@ app has to pass many props, to child account, bonus.
 this leads to props drilling. 
 
 store can be made in app.js or index.js 
-npm i redux 
+
+store.getState()    :  get the global state. 
 
 
+-------------------------------------------------
+npm i json-server 
 
+json-server db.json                 -> if installed global
+npx json-server db.json             -> if installed local
+npx json-server db.json -p 8080     -> dedicated port
 
+-------------------------------------------------
+React-Redux : 
+
+we can use the global store, but re-rending of UI will not happen. 
+so, to solve this problem , react-redux. 
+
+1. state access 
+2. dispatch access 
 
 
 
