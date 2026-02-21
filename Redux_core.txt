@@ -1,9 +1,11 @@
-Redux 
-React-Redux     
-Redux-thunk     : middleware
-Redux-toolkit   : 
+Redux 			: core redux 
+Redux-thunk     : middleware for async task
+redux-logger 	: logs every action 
+
+React-Redux     : binds redux state into react state
+Redux-toolkit   
 RTK Query       : api fetching 
-Redux Saga 
+Redux Saga      
 
 1. Redux concept terms, pattern 
 2. Redux with React , problems, solution 
@@ -11,12 +13,11 @@ Redux Saga
 4. RTK query with React 
 5. project with RTK Async Thunk 
 
----------------------Redux---------------------
-A pattern , A library, independent of frameworks.
-used for state management in js.
-global store, access and change from anywhere.
-
-lifting state leads to props drilling. 
+-------------------------------------------------
+Redux :
+A library used for global state management.
+provides a global store to access and change from anywhere.
+solves problem of lifting state which leads to props drilling. 
 used in : 
 1. Big applications
 2. High frequency of state changes.
@@ -29,60 +30,14 @@ Reducer  : fn with algorithms and filter
 dispatch : sends action to reducer.
 middleware : to pause, delay, modifiy in-btwn dispatch and reducer.
 
-The three principles of Redux:
+Three principles of Redux:
 Single source of truth 		→ The whole app state is stored in one store.
 State is read-only 			→ State can only be changed by dispatching actions.
-Changes are made using pure functions 	→ Reducers calculate the next state.
+Changes by pure fns only	→ Reducers calculate the next state.
 
-
+-------------------------------------------------
 npm install redux 
 npm install redux-logger 
-
-import {createStore, applyMiddleware} from 'redux';
-import logger from 'redux-logger';
-
-const store = createStore(reducer, applyMiddleware(logger.default));
-const history = [ ];
-
-function reducer (state={amount : 1}, action){
-if(action.type === 'increment')
-	return {amount : state.amount + 1};
-else if(action.type == 'decrement')
-	return {amount : state.amount -1};
-else if(action.type === 'incrementByAmount')
-	return {amount : state.amount + action.payload};
- return state;
-}
-
-store.subscribe(()=>{
-history.push(store.getState());
-console.log(history);
-});
-
-setInterval(()=>{
-store.dispatch({type: 'increment', payload : 5});
-}, 2000);
-
-createStore is legacy (Redux core).
-configureStore (from Redux Toolkit) is the recommended standard.
-configureStore replaces manual createStore + applyMiddleware setup.
-reducer is a pure fn that receives (state, action) and must return next state.
-An action object must have a type property and additional fields (payload).
-Redux follows unidirectional data flow, dispatch(action) sends action to the store.
-dispatch sends action to the store, store calls the reducer with (currentState, action).
-Reducers must return The new state object OR the existing state (if nothing changed)
-store.subscribe() runs after every dispatch — regardless of whether state changed.
-applyMiddleware is used with createStore.
-In modern Redux, middleware is added automatically via configureStore.
-Middleware intercepts actions before they reach the reducer.
-Redux Thunk → built-in default in Redux Toolkit
-
-Problem  : Same action can be called multiple times. 
-Solution : Action creator, 
-action names can mismatch, so use constans.
-
---------------------------------------------------------
-Action Creator : 
 
 import {createStore, applyMiddleware} from 'redux';
 import logger from 'redux-logger';
@@ -122,16 +77,51 @@ setInterval(()=>{
 store.dispatch(incrementByAmount(5));
 }, 2000);
 
+---------------------------------------------------------------
+createStore : 
+a function that creates a Redux store.
+configureStore (from Redux Toolkit) is the recommended standard.
+configureStore replaces manual createStore + applyMiddleware setup.
+syntax : createStore(reducer, [preloadedState], [enhancer]);
+
+store provides : 
+store.getState() 			-> Returns the current state tree of the application.
+store.dispatch(action)		-> Sends an action to the reducer to update state.
+store.subscribe(listener) 	-> Registers a callback that runs after every dispatch.
+
+reducer : a pure fn that receives (state, action) and must return next state.
+action  : a object must have a type property and additional fields (payload).
+
+Redux follows unidirectional data flow, dispatch(action) sends action to the store.
+dispatch sends action to the store, store calls the reducer with (currentState, action).
+Reducers must return The new state object OR the existing state (if nothing changed)
+
+applyMiddleware 	: used with createStore.
+In modern Redux, middleware is added automatically via configureStore.
+Middleware intercepts actions before they reach the reducer.
+
+Redux Thunk  : 
+It extends dispatch so it can accept Plain objects and Functions also.
+aim : handle asynchronous side effects without breaking reducer purity.
+built-in default in Redux Toolkit.
+ex : 
+dispatch(actionObject) or dispatch(function).
+
+Action Creator : 
+A function that returns an action object.
+aim : Avoid duplication, maintainability, readability, Encapsulation
+action names can mismatch, so use constans.
+
 --------------------------------------------------------
 Thunk Middleware :
 npm install redux-thunk
 
-"If you dispatch a function instead of an object, 
-I will execute that function and give it dispatch and getState."
-
-Redux (core) cannot handle Promises by default.
+problem : 
+the core store only supports dispatching plain objects
+It does not support dispatching functions or handling async logic.
 we need middleware (Thunk or createAsyncThunk).
 Redux toolkit has in-built Redux-Thunk middleware by default.
+Note : 
 dispatch should be sync, immediate, not async.
 
 create 	: json file db.json 
@@ -144,7 +134,7 @@ Error.  : Actions must be plain objects.
 
 to make await : write a fn 
 
-now inside dispatch, pass function reference. **
+now inside dispatch, pass function reference. 
 now action creator gets two params(dispatch, getState).
 and it will itself stop. 
 now you can directly dispatch in action creator. 
@@ -164,6 +154,7 @@ thunk middleware detects function
 thunk calls function(dispatch, getState)
         ↓
 your async logic runs
+
 ------------------------
 we need new Reducer for new data field logic,
 else it will more complex the logic, and unreadable. 
@@ -201,19 +192,4 @@ const newState = produce(state, draft => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+* pure fn : same i/p same o/p, no side effects.
