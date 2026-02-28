@@ -1,11 +1,11 @@
-subscribe btn : as redux dispatch 
-action  : starts from view.
-redux   : dispatch -> action -> state. 
+subscribe btn   : as redux dispatch 
+action          : starts from view.
+redux           : dispatch -> action -> state. 
 react-redux : to link redux state to react state. 
 + provides convient hooks. 
 
-function in react-redux : 
-provider : defines where redux is accessible. 
+react-redux provides : 
+provider    : defines where redux is accessible. 
 useSelector : access state from react, treats redux state as react state.
 useDispatch : change state from anywhere. 
 
@@ -52,6 +52,26 @@ const amount = useSelector(state => state.account.amount);
 3. useDispatch hook : 
 provides dispatch fn of store.
 const dispatch = useDispatch();
+
+-------------------------------------------------
+Immer is a JavaScript library that lets you write mutable-looking code while actually producing immutable state updates.
+
+It is widely used in modern Redux development (especially inside Redux Toolkit).
+
+import { produce } from "immer";
+const newState = produce(state, draft => {
+  draft.user.name = "John";
+});
+
+Looks mutable — but it’s not.
+
+-------------------------------------------------
+
+note : 
+when a action creator gives a function instead of a action object. 
+it gives error. 
+when we use thunk middleware, 
+it will allow to take a fn also, and it will pass (dispatch , getState) automatically.
 
 
 
