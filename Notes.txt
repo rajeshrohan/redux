@@ -104,10 +104,51 @@ So deposit action triggers bonus logic.
 
 ----------------------------------------------------------------
 createAsyncThunk : 
+used for async api call.
+
+people prefer : RTK query or redux saga over createAsyncThunk.
 
 
 
 
 
 
+----------------------------------------------------------------
+SUMMARY : 
 
+createAction →
+creates action creators that return standard Redux actions `{ type, payload }`,
+useful when actions must be reused across multiple reducers or slices.
+
+createReducer → 
+defines a reducer function using a simpler syntax with Immer, 
+allowing direct state mutation (state.value++) while internally producing immutable updates.
+
+createSlice → 
+combines (initial state, reducers, and auto-generated action creators) in a single structure,
+reducing boilerplate for Redux logic.
+
+extraReducers → 
+allows a slice to respond to actions defined outside the slice, 
+such as actions from other slices or lifecycle actions from async thunks.
+
+combineSlices → 
+automatically combines multiple slice reducers into a single root reducer, 
+similar to combineReducers but designed for Redux Toolkit slices.
+
+configureStore → 
+creates the Redux store with sensible defaults, 
+automatically setting up Redux DevTools, thunk middleware, and combining reducers.
+
+createAsyncThunk → 
+simplifies asynchronous logic (API calls) by generating 
+`pending`, `fulfilled`, and `rejected` action types and handling promise lifecycles.
+
+createEntityAdapter → 
+provides utilities for managing normalized collections of data (like users, posts) 
+with built-in reducers for add, update, remove, and selectors.
+
+createSelector → 
+creates memoized selectors that compute derived data from the store and 
+only recompute when the input state changes.
+----------------------------------------------------------------
