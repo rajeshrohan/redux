@@ -1,0 +1,113 @@
+Redux Toolkit : 
+RTK stands for Redux Toolkit.
+created to simplify Redux development and eliminate common boilerplate patterns.
+It is maintained by the Redux core team.
+
+----------------------------------------------------------------
+installation : 
+npm i @reduxjs/toolkit
+npm i redux-logger 
+npm i react-redux
+
+syntax: 
+import { configureStore } from "@reduxjs/toolkit";          
+import { Provider } from "react-redux";             // binding 
+import { createLogger } from "redux-logger";        // logger 
+
+const logger = createLogger();
+const store = configureStore({
+  reducer: {
+    account: accountReducer,
+    bonus: bonusReducer,
+    reward: rewardReducer,
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+});
+
+Note :
+<Provider store={store}>    -> correct 
+<App store={store}>         -> wrong 
+
+----------------------------------------------------------------
+
+What RTK Provides :
+1. configureStore()     ->  Simplifies store setup and automatically enables:
+    Redux DevTools, Thunk middleware
+2. createSlice()        -> it is used to Generates, All in one place.
+    Action creators, Action types, Reducer logic
+3. createReducer()      -> Cleaner alternative to switch-case reducers.
+4. Immer integration    ->  state.points++;
+
+3. createAction         -> 
+5. createAsyncThunk 
+6. createEntityAdapter
+
+----------------------------------------------------------------
+Slice : 
+used instead of reducers 
+import { createSlice } from '@reduxjs/toolkit';
+
+----------------------------------------------------------------
+createAction()              -> used to create action. 
+createReducer()             -> used to create reducer logic.
+syntax :
+const initialState = { points: 15 };                                // state 
+export const increment = createAction("reward/increment");          // action 
+
+const rewardReducer = createReducer(initialState, (builder) => {    // reducer 
+  builder
+    .addCase(increment, (state, action) => {
+      state.points++;
+    })
+});
+
+params1 = initialState
+params2 = Callback with builder object.
+
+----------------------------------------------------------------
+Immer library :
+ write mutating logic code but are not. 
+
+----------------------------------------------------------------
+extraReducers:
+Problem 1 : 
+when you want to change the state of another another reducer fn , 
+from current reducer fn. 
+syntax : 
+export const bonusSlice = createSlice({
+  name: "bonus",
+  initialState,
+  reducers: {
+    increment: (state) => {
+      state.points += 1;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(incrementBonusByCondition, (state, action) => {
+      if (action.payload >= 100) state.points++;
+    });
+  },
+});
+
+Note : used for async functions also.
+
+Q. Why extraReducers is used?
+Use it when:
+1. The action belongs to another slice
+2. Multiple slices need to respond to the same action
+3. Handling async actions like createAsyncThunk
+
+Example scenario:
+accountSlice → deposit money
+bonusSlice → give reward points, on higher amount deposit.
+So deposit action triggers bonus logic.
+
+----------------------------------------------------------------
+createAsyncThunk : 
+
+
+
+
+
+
+
